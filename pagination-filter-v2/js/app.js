@@ -1,7 +1,8 @@
 const $students = $('.student-item');
 
+let pages;
 const maxListStudents = 10;
-let pageNum = 3;
+let pageNum = 1;
 
 
 showPage(pageNum, $students);
@@ -20,7 +21,11 @@ function showPage(pageNum, studentList) {
 }
 
 function appendPageLinks(studentList) {
-	let pages = Math.floor(studentList.length / maxListStudents) + 1;
+	if(studentList.length % maxListStudents !== 0) {
+		pages = Math.floor(studentList.length / maxListStudents) + 1;
+	} else {
+		pages = Math.floor(studentList.length / maxListStudents);
+	}
 	if($('.pagination') !== undefined) {
 		$('.pagination').hide();
 	}
