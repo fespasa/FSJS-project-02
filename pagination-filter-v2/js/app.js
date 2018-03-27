@@ -11,16 +11,12 @@ appendPageLinks($students);
 
 
 function showPage(pageNum, studentList) {
-	console.log(studentList);
-	studentList.hide();
+	// hide all elements
+	$students.hide();
 	// loop through all students
 	$.each(studentList, function(event){
-		// hide each student
 		console.log(event);
-		console.log($(this));
-		
-		// $(this).hide();
-		if($(this).index() >= (pageNum - 1) * maxListStudents && $(this).index() < pageNum * maxListStudents) {
+		if(event >= (pageNum - 1) * maxListStudents && event < pageNum * maxListStudents) {
 			// display the student if it has to be displayed
 			$(this).show();
 		}
@@ -73,13 +69,11 @@ $('.page-header').append($('<div class="student-search"><input placeholder="Sear
 $('.page-header button').click(function searchList(){
 	// Obtain the input value
 	let searchText = $('.page-header input')[0].value.toLowerCase();
-	// Comprove the value
-	console.log(searchText);
-	console.log(typeof searchText);
+	
 	// hide the pagination links
 	$('.pagination').hide();
 	// create an array of matched students
-	let $matchedStudents = $('<div class="student-list"></div>');
+	let matchedStudents = [];
 	// loop through each student in the list
 	$students.each(function(){
 		// we store the student to a var called student
@@ -94,21 +88,21 @@ $('.page-header button').click(function searchList(){
 		if( name.indexOf(searchText) >= 0 || email.indexOf(searchText) >= 0) {
 			// if name or email is equal to search input text we add the student to the array
 			// matchedStudents.push(student); 
-			$matchedStudents.append(student); 
+			matchedStudents.push(student); 
 			console.log("Student " + name + " found!");
 		}
 	})
-	console.log($matchedStudents);
-	console.log($matchedStudents[0].children);
+	
+	console.log(matchedStudents);
 	// if the array of students is empty we show an alert
-	if($matchedStudents[0].children.length === 0) {
+	if(matchedStudents.length === 0) {
 		alert('Student not found! :(');
 	} else {
 		// if the array is not empty we call the functions to show the list with the students
-		if($matchedStudents[0].children.length > 10) {
-			appendPageLinks($matchedStudents[0].children);
+		if(matchedStudents.length > 10) {
+			appendPageLinks(matchedStudents);
 		}
-		showPage(1, $matchedStudents[0].children);
+		showPage(1, matchedStudents);
 	}
 });
 
