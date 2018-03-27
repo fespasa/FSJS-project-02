@@ -24,6 +24,7 @@ function showPage(pageNum, studentList) {
 			// display the student if it has to be displayed
 			$(this).show();
 		}
+	})
 }
 
 
