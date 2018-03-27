@@ -12,16 +12,20 @@ appendPageLinks($students);
 
 function showPage(pageNum, studentList) {
 	console.log(studentList);
+	studentList.hide();
 	// loop through all students
-	studentList.each(function(){
+	$.each(studentList, function(event){
 		// hide each student
-		$(this).hide();
+		console.log(event);
+		console.log($(this));
+		
+		// $(this).hide();
 		if($(this).index() >= (pageNum - 1) * maxListStudents && $(this).index() < pageNum * maxListStudents) {
 			// display the student if it has to be displayed
 			$(this).show();
 		}
-	})
 }
+
 
 function appendPageLinks(studentList) {
 	// calculate number of pages we need
@@ -67,36 +71,43 @@ $('.page-header').append($('<div class="student-search"><input placeholder="Sear
 // when the search button is clicked it launches the searchList function
 $('.page-header button').click(function searchList(){
 	// Obtain the input value
-	let searchText = $('.page-header input')[0].value;
+	let searchText = $('.page-header input')[0].value.toLowerCase();
 	// Comprove the value
 	console.log(searchText);
+	console.log(typeof searchText);
 	// hide the pagination links
 	$('.pagination').hide();
 	// create an array of matched students
-	let matchedStudents = [];
+	let $matchedStudents = $('<div class="student-list"></div>');
 	// loop through each student in the list
 	$students.each(function(){
 		// we store the student to a var called student
 		let student = $(this)[0];
+	
 		// we store the student name value to a var call name
-		let name = student.children[0].children[1].textContent;
-		// we store the student email value to a var call email
-		let email = student.children[0].children[2].textContent;
+		let name = student.childNodes[1].childNodes[3].textContent;
 		
-		if( name.find(searchText) || email.find(searchText) ) {
+		// we store the student email value to a var call email
+		let email = student.childNodes[1].childNodes[5].textContent;
+		
+		if( name.indexOf(searchText) >= 0 || email.indexOf(searchText) >= 0) {
 			// if name or email is equal to search input text we add the student to the array
-			matchedStudents.push(student); // or $(this)[0] ?
+			// matchedStudents.push(student); 
+			$matchedStudents.append(student); 
+			console.log("Student " + name + " found!");
 		}
 	})
+	console.log($matchedStudents);
+	console.log($matchedStudents[0].children);
 	// if the array of students is empty we show an alert
-	if(matchedStudents.length === 0) {
+	if($matchedStudents[0].children.length === 0) {
 		alert('Student not found! :(');
 	} else {
 		// if the array is not empty we call the functions to show the list with the students
-		if(matchedStudents.length > 10) {
-			appendPageLinks(matchedStudents);
+		if($matchedStudents[0].children.length > 10) {
+			appendPageLinks($matchedStudents[0].children);
 		}
-		showPage(1, matchedStudents);
+		showPage(1, $matchedStudents[0].children);
 	}
 });
 
