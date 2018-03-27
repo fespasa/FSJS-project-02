@@ -96,8 +96,10 @@ $('.page-header button').click(function searchList(){
 	console.log(matchedStudents);
 	// if the array of students is empty we show an alert
 	if(matchedStudents.length === 0) {
-		alert('Student not found! :(');
+		$('.student-search').append('<div class="notFound" style="color: red;"><h5>Student not found! :(</h5></div>');
 	} else {
+		$('.notFound').hide() // hide if there is a not found message
+		
 		// if the array is not empty we call the functions to show the list with the students
 		if(matchedStudents.length > 10) {
 			appendPageLinks(matchedStudents);
